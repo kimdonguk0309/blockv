@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ethereum Prototype Pollution Research</title>
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.7.0/dist/web3.min.js"></script>
+</head>
+<body>
+    <script>
+        // Web3.js 초기화
+        const web3 = new Web3();
+
+        // 프로토타입 오염을 시도
+        Object.prototype.polluted = {
+            balance: web3.utils.toWei('100', 'ether') // 100 ETH 잔고
+        };
+
+        // 새로운 계정 생성
+        const account = web3.eth.accounts.create();
+
+        // 오염된 프로토타입이 반영되었는지 확인
+        console.log(account.polluted); // { balance: "100000000000000000000" }
+
+        // 계정 정보 출력
+        console.log('Address:', account.address);
+        console.log('Private Key:', account.privateKey);
+        console.log('Balance:', web3.utils.fromWei(account.polluted.balance, 'ether'), 'ETH');
+    </script>
+</body>
+</html>
